@@ -20,6 +20,7 @@ IMAGE_SIZE_EXTENDED = str(IMAGE_WIDTH + 2*IMAGE_W_BORDER) + "x" + str(IMAGE_HEIG
 VIDEO_FPS = "60"
 VIDEO_VID_BITRATE = "10M"
 VIDEO_AUD_BITRATE = "256k"
+# video size controlled by the image size
 
 def text_to_speech_func(wav_file_name, text_file_name):
 	# make sure to do -w arg before the -f arg, because sometimes it just won't write to a wav file otherwise

@@ -72,6 +72,30 @@ I got around this issue by making an AutoHotkey script to drag a Transform effec
 
 Alternatively, you could scale the image so you don't even need a background, but that makes a less interesting viewing experience.
 
+## Example usage
+
+Input comment:
+
+```
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet porttitor eget dolor morbi non arcu risus quis. Nibh tellus molestie nunc non blandit massa enim nec.
+```
+
+Split comment with `comment_splitter.py` (edited to also split on commas):
+
+```
+Lorem ipsum dolor sit amet, 
+consectetur adipiscing elit, 
+sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Amet porttitor eget dolor morbi non arcu risus quis. 
+Nibh tellus molestie nunc non blandit massa enim nec.
+```
+
+Text-to-video with `comment_to_speech.py` (then converted to a GIF, but trust me, there would be audio if GIFs supported audio)
+
+![lorem ipsum example](examples/lorem_ipsum.gif)
+
+Remember to adjust video settings as needed.
+
 ## Contributing
 
 This is intended to be an extremely simple way to automate the worst parts of Reddit readings (line-by-line advancement), so once it's done it's done.
