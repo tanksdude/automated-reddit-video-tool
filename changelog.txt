@@ -1,0 +1,15 @@
+1.0.0 (obviously not here)
+* option to merge the separate mp4 files into one
+* program generates the wav, then png, then mp4 file for each line (instead of *every* wav, then png, then mp4)
+
+0.9.0 (in development)
+* word censoring
+* AHK script QoL update: constants at top
+
+0.8.0 "initial release"
+* comment splitting
+* comment to wav, png, and mp4
+    * option for different wav and png inputs
+* AHK script for Kdenlive
+
+GitHub: https://github.com/tanksdude/automated-reddit-video-tool
