@@ -46,7 +46,7 @@ Steps:
 1. Obtain the comment you wish to be read aloud. Paste it into a text file.
 2. Split the comment by sentences: `py -3 comment_splitter.py [comment input file] [line-by-line output name]` (run this through the command line, in case you didn't know)
 3. (Optional) Manually edit the output file to adjust anything you want. For example, extra pauses when reading a comma-separated list or splitting after emojis.
-4. (TODO) (Optional) Generate a test image of the full comment, so you can fix the size and stuff: `py -3 comment_test_image.py [line-by-line input file] [png file output name]`
+4. (Optional) Generate a test image of the full comment, so you can change the font size and image size and stuff: `py -3 comment_test_image.py [line-by-line input file] [png file output name]`
 5. Take that output and have it read aloud: `py -3 comment_to_speech.py [line-by-line input file] [mp4 file names]` (have a "$" in the mp4 name, because that's where the numbers will go)
 6. Note: To edit the parameters of the final output, you will need to edit the constants at the top of `comment_to_speech.py`. The font is Verdana because that's what Reddit uses.
 7. Throw the mp4 files into your favorite video editor and do what you want!
@@ -58,7 +58,11 @@ There are ways to further automate this process but that's beyond the scope of t
 
 Want the words to be censored? No problem!
 
-TODO: currently not an option
+Make a file in the form `bad1|censored1 bad2|censored2 bad3|censored3 ...` (but replace spaces with newlines), and keep in mind that the word replacement is case-sensitive
+
+Then `py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt censored_words_dict.txt`
+
+
 
 Want the words spoken to be slightly different than the text that appears (since sometimes the text-to-speech voices introduce pauses where most people wouldn't pause)? No problem!
 

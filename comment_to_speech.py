@@ -118,7 +118,7 @@ for line in speech_text_file_lines:
 
 print("Made " + str(files_count) + " audio files")
 
-# split the sentences into their own files, append then, then convert it to an image:
+# split the sentences into their own files, append them, then convert it to an image:
 
 files_count = 0
 curr_file_read = ""
