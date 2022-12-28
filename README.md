@@ -60,13 +60,13 @@ Want the words to be censored? No problem!
 
 Make a file in the form `bad1|censored1 bad2|censored2 bad3|censored3 ...` (but replace spaces with newlines), and keep in mind that the word replacement is case-sensitive
 
-Then `py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt censored_words_dict.txt`
+Then `py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt -c censored_words_dict.txt`
 
 
 
 Want the words spoken to be slightly different than the text that appears (since sometimes the text-to-speech voices introduce pauses where most people wouldn't pause)? No problem!
 
-`py -3 comment_to_speech.py [line-by-line speech text input file] [mp4 file names] [line-by-line image text input file]` (they need to be the same number of lines, obviously)
+`py -3 comment_to_speech.py [line-by-line speech text input file] [mp4 file names] -t [line-by-line image text input file]` (they need to be the same number of lines, obviously)
 
 ### Known Emoji Problem
 
