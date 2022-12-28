@@ -68,6 +68,10 @@ Want the words spoken to be slightly different than the text that appears (since
 
 `py -3 comment_to_speech.py [line-by-line speech text input file] [mp4 file names] [line-by-line image text input file]` (they need to be the same number of lines, obviously)
 
+### Known Emoji Problem
+
+Emojis don't render with full color. Probably a problem with ImageMagick.
+
 ### Known Usability Problem
 
 Kdenlive automatically scales clips to the project's profile settings. Although it keeps the aspect ratio, it's still not preferable.
@@ -99,6 +103,10 @@ Text-to-video with `comment_to_speech.py` (then converted to a GIF, but trust me
 ![lorem ipsum example](examples/lorem_ipsum.gif)
 
 Remember to adjust video settings as needed.
+
+Note: emojis don't render with full color.
+
+![emoji example](examples/2014_laughed.gif)
 
 ## Contributing
 
