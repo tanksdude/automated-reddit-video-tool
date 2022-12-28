@@ -1,8 +1,9 @@
 import os, sys
 import subprocess
+import argparse
 import time
 
-# py -3 comment_to_speech.py input_splits/lorem_ipsum_speech.txt speech_outputs/lorem_ipsum_$.mp4 input_splits/lorem_ipsum_image.txt
+# py -3 comment_to_speech.py input_splits/lorem_ipsum_speech.txt speech_outputs/lorem_ipsum_$.mp4 -t input_splits/lorem_ipsum_image.txt
 
 # Image parameters:
 IMAGE_WIDTH = 900
@@ -37,25 +38,21 @@ def speech_and_image_to_vid_func(vid_file_name, wav_file_name, img_file_name, fr
 	# loglevels: quiet, fatal, error, warning
 	# https://ffmpeg.org/ffmpeg.html#Main-options
 
-#maybe one day:
-#parser = argparse.ArgumentParser()
-#parser.add_argument("input_speech_file")
-#parser.add_argument("-e", "--input-text", nargs=1, required=False)
-#parser.add_argument("output_mp4_files")
-#
-#test_args = parser.parse_args()
-#print(test_args.filename, test_args.count, test_args.verbose)
+parser = argparse.ArgumentParser()
+parser.add_argument("input_speech_file", help="text to read aloud")
+parser.add_argument("-t", "--input_text_file", metavar="input_text_file", required=False, help="text to show on screen")
+parser.add_argument("output_mp4_files", help="output video files (needs a '$' in its name)")
 
-if len(sys.argv) < 3:
-	sys.exit(f"Usage: {sys.argv[0]} [input_comment.txt] [output_vid_$.mp4] [optional_image_text.txt]")
+args = parser.parse_args()
 
-input_speech_text_file_path = sys.argv[1]
-output_vid_file_path = sys.argv[2]
+#if len(sys.argv) < 3:
+#	sys.exit(f"Usage: {sys.argv[0]} [input_comment.txt] [output_vid_$.mp4] [optional_image_text.txt]")
+
+input_speech_text_file_path = args.input_speech_file
+output_vid_file_path = args.output_mp4_files
 if output_vid_file_path.find('$') == -1:
 	sys.exit("Bad output vid file names")
-input_image_text_file_path = input_speech_text_file_path
-if len(sys.argv) >= 4:
-	input_image_text_file_path = sys.argv[3]
+input_image_text_file_path = args.input_text_file
 
 start_time = time.time()
 
@@ -82,19 +79,23 @@ except Exception as e:
 speech_text_file_lines = input_speech_text_file.readlines()
 input_speech_text_file.close()
 
-try:
-	input_image_text_file = open(input_image_text_file_path, "r", encoding="utf8")
-except FileNotFoundError:
-	sys.exit("File \"" + input_image_text_file_path + "\" not found!")
-except IsADirectoryError:
-	sys.exit("\"" + input_image_text_file_path + "\" is a directory; could not read")
-except PermissionError:
-	sys.exit("Could not read \"" + input_image_text_file_path + "\" due to permissions granted!")
-except Exception as e:
-	sys.exit("Other error while reading file \"" + input_image_text_file_path + "\":", e)
+image_text_file_lines = ""
+if input_image_text_file_path != None:
+	try:
+		input_image_text_file = open(input_image_text_file_path, "r", encoding="utf8")
+	except FileNotFoundError:
+		sys.exit("File \"" + input_image_text_file_path + "\" not found!")
+	except IsADirectoryError:
+		sys.exit("\"" + input_image_text_file_path + "\" is a directory; could not read")
+	except PermissionError:
+		sys.exit("Could not read \"" + input_image_text_file_path + "\" due to permissions granted!")
+	except Exception as e:
+		sys.exit("Other error while reading file \"" + input_image_text_file_path + "\":", e)
 
-image_text_file_lines = input_image_text_file.readlines()
-input_image_text_file.close()
+	image_text_file_lines = input_image_text_file.readlines()
+	input_image_text_file.close()
+else:
+	image_text_file_lines = speech_text_file_lines
 
 # split the sentences into their own files, then convert it to text-to-speech:
 

@@ -1,5 +1,6 @@
 import os, sys
 import subprocess
+import argparse
 import time
 
 # py -3 comment_test_image.py input_splits/lorem_ipsum_speech.txt input_splits/lorem_ipsum_test_image.png
@@ -21,11 +22,17 @@ def text_to_image_func(img_file_name, text_file_name, img_size, font_size, back_
 	return subprocess.run(["magick", "-size", img_size, "-background", back_color, "-fill", text_color, "-font", "Verdana", "-pointsize", font_size, "pango:@" + text_file_name, "-gravity", "center", "-extent", img_extended_size, img_file_name])
 	# https://imagemagick.org/Usage/text/#caption
 
-if len(sys.argv) < 3:
-	sys.exit(f"Usage: {sys.argv[0]} [line-by-line input file] [png file output name]")
+parser = argparse.ArgumentParser()
+parser.add_argument("input_split_comment_file", help="split comment input")
+parser.add_argument("output_image_file", help="output image file")
 
-input_image_text_file_path = sys.argv[1]
-output_img_file_path = sys.argv[2]
+args = parser.parse_args()
+
+#if len(sys.argv) < 3:
+#	sys.exit(f"Usage: {sys.argv[0]} [line-by-line_input.txt] [output_image.png]")
+
+input_image_text_file_path = args.input_split_comment_file
+output_img_file_path = args.output_image_file
 
 start_time = time.time()
 

@@ -1,21 +1,27 @@
 import os, sys
 import re
+import argparse
 import time
 
-# py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt input_comments/censored_words_dict.txt
+# py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt -c input_comments/censored_words_dict.txt
 
 SPLIT_CHARS = "".join([".", ";", "!", "\\?"])
 SPLIT_REGEX = "[" + SPLIT_CHARS + "]+\\S*\\s+"
 CENSORED_WORDS_SPLIT_CHAR = "|" # only for parsing the censored words file
 
-if len(sys.argv) < 3:
-	sys.exit(f"Usage: {sys.argv[0]} [input_comment.txt] [output_comment_$.txt] [optional_censored_word_dict.txt]")
+parser = argparse.ArgumentParser()
+parser.add_argument("input_comment_file", help="comment to split")
+parser.add_argument("-c", "--censored_words_dict", metavar="censored_words_dict", required=False, help="word replacement dictionary")
+parser.add_argument("output_comment_file", help="output split comment file")
 
-input_file_path = sys.argv[1]
-output_file_path = sys.argv[2]
-censored_words_dict_path = None
-if len(sys.argv) >= 4:
-	censored_words_dict_path = sys.argv[3]
+args = parser.parse_args()
+
+#if len(sys.argv) < 3:
+#	sys.exit(f"Usage: {sys.argv[0]} [input_comment.txt] [output_comment.txt] [optional_censored_word_dict.txt]")
+
+input_file_path = args.input_comment_file
+output_file_path = args.output_comment_file
+censored_words_dict_path = args.censored_words_dict
 
 start_time = time.time()
 
@@ -99,9 +105,6 @@ if censored_words_file_text != None:
 		for sentence_index in range(len(file_sentences[line_index])):
 			for key, val in censored_words_dict.items():
 				file_sentences[line_index][sentence_index] = re.sub("\\b" + key + "\\b", val, file_sentences[line_index][sentence_index])
-				#attempt:
-				#WHOLE_WORDS_INDICATOR = "".join([".", ",", ";", "!", "\\?", "-", "\\s"])
-				#file_sentences[line_index][sentence_index] = re.sub(key + "(?<=[" + WHOLE_WORDS_INDICATOR + "]|$)" + "(?=[" + WHOLE_WORDS_INDICATOR + "]|$)", val, file_sentences[line_index][sentence_index])
 
 # write each line to the output file
 
