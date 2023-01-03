@@ -112,6 +112,10 @@ Note: emojis don't render with full color.
 
 ![emoji example](examples/2014_laughed.gif)
 
+It's a good idea to cite your sources. To do this, add `Poster: u/AutoModerator` or whatever to the top of the comment file, then simply don't include the first video file when making the video! Yes, it's a hack, but it's a simple solution.
+
+![automoderator example](examples/automoderator.gif)
+
 ## Contributing
 
 This is intended to be an extremely simple way to automate the worst parts of Reddit readings (line-by-line advancement), so once it's done it's done.
