@@ -1,8 +1,8 @@
-1.1.0 (obviously not here)
+1.1.0 (not here)
 * option to merge the separate mp4 files into one
 * option to not use the command line?
 
-1.0.0 (in development)
+1.0.0 "done"
 * better command line inputs
 * program generates the wav, then png, then mp4 file for each line (instead of *every* wav, then png, then mp4)
 

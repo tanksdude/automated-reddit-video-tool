@@ -81,7 +81,7 @@ except Exception as e:
 speech_text_file_lines = input_speech_text_file.readlines()
 input_speech_text_file.close()
 
-image_text_file_lines = ""
+image_text_file_lines = None
 if input_image_text_file_path != None:
 	try:
 		input_image_text_file = open(input_image_text_file_path, "r", encoding="utf8")
@@ -99,67 +99,46 @@ if input_image_text_file_path != None:
 else:
 	image_text_file_lines = speech_text_file_lines
 
-# split the sentences into their own files, then convert it to text-to-speech:
+if len(speech_text_file_lines) != len(image_text_file_lines):
+	sys.exit("Lines in speech text file and image text file don't match")
 
-files_count = 0
-curr_file_read = ""
+files_count = 0 # for the vid_$.mp4 file; the file number won't match the line number
+curr_text_file_read = ""
 
-for line in speech_text_file_lines:
-	line = line[0:-1] # every line should end in a \n
-	#print(line, end="")
-	if len(line) == 0:
+for i in range(len(speech_text_file_lines)):
+	speech_line = speech_text_file_lines[i]
+	image_line = image_text_file_lines[i]
+	speech_line = speech_line[0:-1] # every line should end in a \n
+	image_line = image_line[0:-1]
+	if len(speech_line) == 0:
+		curr_text_file_read += "\n\n"
 		continue
 
 	files_count += 1
+
+	# speech file:
 	output_file = open(gen_output_wav_file_path(files_count)+".temp", "w", encoding="utf8")
-	output_file.write(line)
+	output_file.write(speech_line)
 	output_file.close()
 
 	result = text_to_speech_func(gen_output_wav_file_path(files_count), gen_output_wav_file_path(files_count)+".temp")
-	#print(result)
 	os.remove(gen_output_wav_file_path(files_count)+".temp")
 
-print("Made " + str(files_count) + " audio files")
-
-# split the sentences into their own files, append them, then convert it to an image:
-
-files_count = 0
-curr_file_read = ""
-
-for line in image_text_file_lines:
-	line = line[0:-1] # every line should end in a \n
-	#print(line, end="")
-	if len(line) == 0:
-		curr_file_read += "\n\n"
-		continue
-
-	files_count += 1
-	curr_file_read += line
+	# image file:
+	curr_text_file_read += image_line
 	output_file = open(gen_output_img_file_path(files_count)+".temp", "w", encoding="utf8")
-	output_file.write(curr_file_read)
+	output_file.write(curr_text_file_read)
 	output_file.close()
 
 	result = text_to_image_func(gen_output_img_file_path(files_count), gen_output_img_file_path(files_count)+".temp", IMAGE_SIZE, IMAGE_FONT_SIZE, IMAGE_BACKGROUND_COLOR, IMAGE_TEXT_COLOR, IMAGE_SIZE_EXTENDED)
-	#print(result)
 	os.remove(gen_output_img_file_path(files_count)+".temp")
 
-print("Made " + str(files_count) + " images")
+	# video:
+	result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_AUD_BITRATE)
 
-# merge the audio files and images into a video
-
-for i in range(1, files_count+1):
-	result = speech_and_image_to_vid_func(gen_output_vid_file_path(i), gen_output_wav_file_path(i), gen_output_img_file_path(i), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_VID_BITRATE)
-	#print(result)
-
-print("Made " + str(files_count) + " videos")
-
-# remove unnecessary audio files and images
-
-for i in range(1, files_count+1):
-	os.remove(gen_output_wav_file_path(i))
-	os.remove(gen_output_img_file_path(i))
-
-print("Deleted " + str(files_count) + " audio files and " + str(files_count) + " images")
+	# cleanup:
+	os.remove(gen_output_wav_file_path(files_count))
+	os.remove(gen_output_img_file_path(files_count))
 
 end_time = time.time()
-print("Executed in " + str(end_time - start_time) + "s")
+print("Made " + str(files_count) + " videos in " + str(end_time - start_time) + "s")
