@@ -21,6 +21,8 @@ IMAGE_SIZE_EXTENDED = str(IMAGE_WIDTH + 2*IMAGE_W_BORDER) + "x" + str(IMAGE_HEIG
 VIDEO_FPS = "60"
 VIDEO_VID_BITRATE = "10M"
 VIDEO_AUD_BITRATE = "256k"
+VIDEO_VID_CODEC = "libx264" # libaom-av1 for AV1
+VIDEO_AUD_CODEC = "aac" # doesn't everything nowadays use AAC?
 # video size controlled by the image size
 
 def text_to_speech_func(wav_file_name, text_file_name):
@@ -34,7 +36,7 @@ def text_to_image_func(img_file_name, text_file_name, img_size, font_size, back_
 	# https://imagemagick.org/Usage/text/#caption
 
 def speech_and_image_to_vid_func(vid_file_name, wav_file_name, img_file_name, framerate, vid_bitrate, aud_bitrate):
-	return subprocess.run(["ffmpeg.exe", "-i", wav_file_name, "-i", img_file_name, "-c:v", "libx264", "-r", framerate, "-b:v", vid_bitrate, "-b:a", aud_bitrate, "-loglevel", "error", "-y", vid_file_name])
+	return subprocess.run(["ffmpeg.exe", "-i", wav_file_name, "-i", img_file_name, "-c:v", VIDEO_VID_CODEC, "-c:a", VIDEO_AUD_CODEC, "-r", framerate, "-b:v", vid_bitrate, "-b:a", aud_bitrate, "-loglevel", "error", "-y", vid_file_name])
 	# loglevels: quiet, fatal, error, warning
 	# https://ffmpeg.org/ffmpeg.html#Main-options
 

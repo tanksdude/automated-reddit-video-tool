@@ -6,7 +6,7 @@ import time
 # py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt -c input_comments/censored_words_dict.txt
 
 SPLIT_CHARS = "".join([".", ";", "!", "\\?"])
-SPLIT_REGEX = "[" + SPLIT_CHARS + "]+\\S*\\s+"
+SPLIT_REGEX = "[" + SPLIT_CHARS + r"]+\S*\s+"
 CENSORED_WORDS_SPLIT_CHAR = "|" # only for parsing the censored words file
 
 parser = argparse.ArgumentParser()
@@ -115,4 +115,4 @@ for line in file_sentences:
 output_file.close()
 
 end_time = time.time()
-print("Wrote " + output_file_path + ", execution time " + str(end_time - start_time))
+print("Wrote " + output_file_path + " in " + str(end_time - start_time) + "s")

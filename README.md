@@ -58,7 +58,7 @@ There are ways to further automate this process but that's beyond the scope of t
 
 Want the words to be censored? No problem!
 
-Make a file in the form `bad1|censored1 bad2|censored2 bad3|censored3 ...` (but replace spaces with newlines), and keep in mind that the word replacement is case-sensitive
+Make a file in the form `bad1|censored1 bad2|censored2 bad3|censored3 ...` (but replace spaces with newlines), and keep in mind that the word replacement is case-sensitive.
 
 Then `py -3 comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt -c censored_words_dict.txt`
 
@@ -79,6 +79,10 @@ Kdenlive automatically scales clips to the project's profile settings. Although 
 I got around this issue by making an AutoHotkey script to drag a Transform effect and update all the values necessary. Yes, I updated the script for each comment.
 
 Alternatively, you could scale the image so you don't even need a background, but that makes a less interesting viewing experience.
+
+### Video codec note
+
+The video codec is set to H.264, because that's been the standard for a long time. As of writing this, the industry is slowly moving towards AV1. You will need to update the script a little if you want to use the AV1 codec.
 
 ## Example usage
 
