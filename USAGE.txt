@@ -1,0 +1,85 @@
+Prerequisites:
+* Python 3
+* Windows (because I couldn't get Daniel UK working on non-Windows)
+* follow the steps in README.md to install the required programs (Balabolka, ImageMagick, FFmpeg)
+* a text editor to change some parameters at the top of the Python scripts
+* a video editor to put everything together
+
+
+
+Usage steps:
+0. install the necessary programs
+1. Obtain the comment you wish to be read aloud. Paste it into a text file.
+2. (Non-developer step) Open the command line and `cd` to where you placed this project. For example, `cd C:/Users/<name>/Desktop/automated-reddit-video-tool`.
+3. Split the comment by sentences: `py -3 comment_splitter.py [comment input file] [line-by-line output name]` (non-developers: run this through the command line)
+4. (Optional) Manually edit the output file to adjust anything you want. For example, extra pauses when reading a comma-separated list or splitting after emojis.
+5. (Optional) Generate a test image of the full comment, so you can change the font size and image size and stuff: `py -3 comment_test_image.py [line-by-line input file] [png file output name]` (change the constants at the top of `comment_test_image.py` to see changes)
+6. Take that output and have it read aloud: `py -3 comment_to_speech.py [line-by-line input file] [mp4 file names]` (have a "$" in the MP4 name, because that's where the numbers will go)
+7. Note: To edit the parameters of the final output, you will need to edit the constants at the top of `comment_to_speech.py`.
+8. Throw the MP4 files into your favorite video editor and do what you want!
+9. (Optional) There's an AutoHotkey script included with this project (kdenlive_size_adjustment.ahk) to speed up editing in Kdenlive, since Kdenlive scales the video.
+
+
+
+Word censoring:
+Make a file in the form
+```
+bad1|censored1
+bad2|censored2
+bad3|censored3
+```
+Then `py -3 comment_splitter.py [input comment file] [split comment file] -c [censored words file]`
+
+
+
+Speech different from image text:
+`py -3 comment_to_speech.py [line-by-line speech text input file] [mp4 file names] -t [line-by-line image text input file]`
+
+
+
+comment_splitter.py
+usage: comment_splitter.py [-h] [-c censored_words_dict] input_comment_file output_comment_file
+
+positional arguments:
+  input_comment_file       comment to split
+  output_comment_file      output split comment file
+
+optional arguments:
+  -h, --help               show this help message and exit
+  -c censored_words_dict   word replacement dictionary
+
+
+
+comment_test_image.py
+usage: comment_test_image.py [-h] input_split_comment_file output_image_file
+
+positional arguments:
+  input_split_comment_file   split comment input
+  output_image_file          output image file
+
+optional arguments:
+  -h, --help                 show this help message and exit
+
+
+
+comment_to_speech.py
+usage: comment_to_speech.py [-h] [-t input_text_file] input_speech_file output_mp4_files
+
+positional arguments:
+  input_speech_file    text to read aloud
+  output_mp4_files     output video files (needs a '$' in its name)
+
+optional arguments:
+  -h, --help           show this help message and exit
+  -t input_text_file   text to show on screen
+
+
+
+kdenlive_size_adjustment.ahk
+usage: just run it
+
+helpful Suspend hotkey: CTRL Enter
+helpful ExitApp hotkey: CTRL SHIFT ALT e
+
+minus key: drag a Transform effect onto the clip
+plus key: update the Transform effect's parameters
