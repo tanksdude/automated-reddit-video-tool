@@ -4,6 +4,7 @@
 
 1.0.1
 * changed default video settings, updated AHK script
+* option to replace/generate a single video
 
 1.0.0 "done"
 * better command line inputs

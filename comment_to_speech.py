@@ -45,6 +45,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("input_speech_file", help="text to read aloud")
 parser.add_argument("-t", "--input_text_file", metavar="input_text_file", required=False, help="text to show on screen")
 parser.add_argument("output_mp4_files", help="output video files (needs a '$' in its name)")
+parser.add_argument("-n", "--video_number", metavar="video_number", required=False, help="update/generate a specific video", type=int) #maybe try action="extend"
 
 args = parser.parse_args()
 
@@ -56,6 +57,7 @@ output_vid_file_path = args.output_mp4_files
 if output_vid_file_path.find('$') == -1:
 	sys.exit("Bad output vid file names")
 input_image_text_file_path = args.input_text_file
+replace_video_number = args.video_number
 
 start_time = time.time()
 
@@ -114,32 +116,40 @@ for i in range(len(speech_text_file_lines)):
 	if len(speech_line) == 0:
 		curr_text_file_read += IMAGE_NEW_PARAGRAPH_SEP
 		continue
+	curr_text_file_read += image_line
 
 	files_count += 1
 
-	# speech file:
-	output_file = open(gen_output_wav_file_path(files_count)+".temp", "w", encoding="utf8")
-	output_file.write(speech_line)
-	output_file.close()
+	if (replace_video_number == None) or (replace_video_number == files_count):
+		# speech file:
+		output_file = open(gen_output_wav_file_path(files_count)+".temp", "w", encoding="utf8")
+		output_file.write(speech_line)
+		output_file.close()
 
-	result = text_to_speech_func(gen_output_wav_file_path(files_count), gen_output_wav_file_path(files_count)+".temp")
-	os.remove(gen_output_wav_file_path(files_count)+".temp")
+		result = text_to_speech_func(gen_output_wav_file_path(files_count), gen_output_wav_file_path(files_count)+".temp")
+		os.remove(gen_output_wav_file_path(files_count)+".temp")
 
-	# image file:
-	curr_text_file_read += image_line
-	output_file = open(gen_output_img_file_path(files_count)+".temp", "w", encoding="utf8")
-	output_file.write(curr_text_file_read)
-	output_file.close()
+		# image file:
+		output_file = open(gen_output_img_file_path(files_count)+".temp", "w", encoding="utf8")
+		output_file.write(curr_text_file_read)
+		output_file.close()
 
-	result = text_to_image_func(gen_output_img_file_path(files_count), gen_output_img_file_path(files_count)+".temp", IMAGE_SIZE, IMAGE_FONT_SIZE, IMAGE_BACKGROUND_COLOR, IMAGE_TEXT_COLOR, IMAGE_SIZE_EXTENDED)
-	os.remove(gen_output_img_file_path(files_count)+".temp")
+		result = text_to_image_func(gen_output_img_file_path(files_count), gen_output_img_file_path(files_count)+".temp", IMAGE_SIZE, IMAGE_FONT_SIZE, IMAGE_BACKGROUND_COLOR, IMAGE_TEXT_COLOR, IMAGE_SIZE_EXTENDED)
+		os.remove(gen_output_img_file_path(files_count)+".temp")
 
-	# video:
-	result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_AUD_BITRATE)
+		# video:
+		result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_AUD_BITRATE)
 
-	# cleanup:
-	os.remove(gen_output_wav_file_path(files_count))
-	os.remove(gen_output_img_file_path(files_count))
+		# cleanup:
+		os.remove(gen_output_wav_file_path(files_count))
+		os.remove(gen_output_img_file_path(files_count))
+
+		# break early if only one video is being updated:
+		if (replace_video_number != None):
+			break
 
 end_time = time.time()
-print("Made " + str(files_count) + " videos in " + str(end_time - start_time) + "s")
+if replace_video_number == None:
+	print("Made " + str(files_count) + " videos in " + str(end_time - start_time) + "s")
+else:
+	print("Replaced video " + str(replace_video_number) + " in " + str(end_time - start_time) + "s")
