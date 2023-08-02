@@ -3,15 +3,16 @@ import subprocess
 import argparse
 import time
 
-# py -3 comment_test_image.py input_splits/lorem_ipsum_speech.txt input_splits/lorem_ipsum_test_image.png
+# python comment_test_image.py input_splits/lorem_ipsum_speech.txt input_splits/lorem_ipsum_test_image.png
 
 # Image parameters:
-IMAGE_WIDTH = 900
-IMAGE_HEIGHT = 700
-IMAGE_W_BORDER = 50
-IMAGE_H_BORDER = 50
-IMAGE_FONT_SIZE = "24"
-IMAGE_BACKGROUND_COLOR = "transparent"
+IMAGE_WIDTH = 960 - 2*32
+IMAGE_HEIGHT = 640 - 2*32
+IMAGE_W_BORDER = 32
+IMAGE_H_BORDER = 32
+IMAGE_FONT_SIZE = "20"
+IMAGE_NEW_PARAGRAPH_SEP = "\n\n"
+IMAGE_BACKGROUND_COLOR = "black"
 IMAGE_TEXT_COLOR = "white"
 # evaluated image parameters:
 IMAGE_SIZE = str(IMAGE_WIDTH) + "x" + str(IMAGE_HEIGHT)
@@ -58,7 +59,7 @@ for line in image_text_file_lines:
 	line = line[0:-1] # every line should end in a \n
 	#print(line, end="")
 	if len(line) == 0:
-		curr_file_read += "\n\n"
+		curr_file_read += IMAGE_NEW_PARAGRAPH_SEP
 		continue
 	curr_file_read += line
 
@@ -71,4 +72,4 @@ result = text_to_image_func(output_img_file_path, output_img_file_path+".temp", 
 os.remove(output_img_file_path+".temp")
 
 end_time = time.time()
-print("Executed in " + str(end_time - start_time) + "s")
+print("Test image made in " + str(end_time - start_time) + "s")

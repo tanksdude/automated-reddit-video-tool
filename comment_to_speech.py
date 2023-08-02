@@ -3,15 +3,16 @@ import subprocess
 import argparse
 import time
 
-# py -3 comment_to_speech.py input_splits/lorem_ipsum_speech.txt speech_outputs/lorem_ipsum_$.mp4 -t input_splits/lorem_ipsum_image.txt
+# python comment_to_speech.py input_splits/lorem_ipsum_speech.txt output_speech/lorem_ipsum_$.mp4 -t input_splits/lorem_ipsum_image.txt
 
 # Image parameters:
-IMAGE_WIDTH = 900
-IMAGE_HEIGHT = 700
-IMAGE_W_BORDER = 50
-IMAGE_H_BORDER = 50
-IMAGE_FONT_SIZE = "24"
-IMAGE_BACKGROUND_COLOR = "transparent"
+IMAGE_WIDTH = 960 - 2*32
+IMAGE_HEIGHT = 640 - 2*32
+IMAGE_W_BORDER = 32
+IMAGE_H_BORDER = 32
+IMAGE_FONT_SIZE = "20"
+IMAGE_NEW_PARAGRAPH_SEP = "\n\n"
+IMAGE_BACKGROUND_COLOR = "black"
 IMAGE_TEXT_COLOR = "white"
 # evaluated image parameters:
 IMAGE_SIZE = str(IMAGE_WIDTH) + "x" + str(IMAGE_HEIGHT)
@@ -19,7 +20,7 @@ IMAGE_SIZE_EXTENDED = str(IMAGE_WIDTH + 2*IMAGE_W_BORDER) + "x" + str(IMAGE_HEIG
 
 # Video parameters:
 VIDEO_FPS = "60"
-VIDEO_VID_BITRATE = "10M"
+VIDEO_VID_BITRATE = "10M" # recommended 8M for the final export
 VIDEO_AUD_BITRATE = "256k"
 VIDEO_VID_CODEC = "libx264" # libaom-av1 for AV1
 VIDEO_AUD_CODEC = "aac" # doesn't everything nowadays use AAC?
@@ -27,7 +28,7 @@ VIDEO_AUD_CODEC = "aac" # doesn't everything nowadays use AAC?
 
 def text_to_speech_func(wav_file_name, text_file_name):
 	# make sure to do -w arg before the -f arg, because sometimes it just won't write to a wav file otherwise
-	return subprocess.run(["balcon.exe", "-n", "ScanSoft Daniel_Full_22kHz", "-enc", "utf8", "-w", wav_file_name, "-f", text_file_name])
+	return subprocess.run(["balcon", "-n", "ScanSoft Daniel_Full_22kHz", "-enc", "utf8", "-w", wav_file_name, "-f", text_file_name])
 	# Linux espeak: subprocess.run(["espeak", "-v", "english+f4", "-w", wav_file_name, "-f", text_file_name])
 
 def text_to_image_func(img_file_name, text_file_name, img_size, font_size, back_color, text_color, img_extended_size):
@@ -36,7 +37,7 @@ def text_to_image_func(img_file_name, text_file_name, img_size, font_size, back_
 	# https://imagemagick.org/Usage/text/#caption
 
 def speech_and_image_to_vid_func(vid_file_name, wav_file_name, img_file_name, framerate, vid_bitrate, aud_bitrate):
-	return subprocess.run(["ffmpeg.exe", "-i", wav_file_name, "-i", img_file_name, "-c:v", VIDEO_VID_CODEC, "-c:a", VIDEO_AUD_CODEC, "-r", framerate, "-b:v", vid_bitrate, "-b:a", aud_bitrate, "-loglevel", "error", "-y", vid_file_name])
+	return subprocess.run(["ffmpeg", "-i", wav_file_name, "-i", img_file_name, "-c:v", VIDEO_VID_CODEC, "-c:a", VIDEO_AUD_CODEC, "-r", framerate, "-b:v", vid_bitrate, "-b:a", aud_bitrate, "-loglevel", "error", "-y", vid_file_name])
 	# loglevels: quiet, fatal, error, warning
 	# https://ffmpeg.org/ffmpeg.html#Main-options
 
@@ -111,7 +112,7 @@ for i in range(len(speech_text_file_lines)):
 	speech_line = speech_line[0:-1] # every line should end in a \n
 	image_line = image_line[0:-1]
 	if len(speech_line) == 0:
-		curr_text_file_read += "\n\n"
+		curr_text_file_read += IMAGE_NEW_PARAGRAPH_SEP
 		continue
 
 	files_count += 1

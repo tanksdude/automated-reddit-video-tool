@@ -1,7 +1,7 @@
 *.exe
 input_comments/
 input_splits/
-speech_outputs/
+output_speech/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

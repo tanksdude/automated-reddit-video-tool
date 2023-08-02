@@ -1,6 +1,9 @@
-1.1.0 (not here)
+1.1.0 (not here, probably won't do)
 * option to merge the separate mp4 files into one
 * option to not use the command line?
+
+1.0.1
+* changed default video settings, updated AHK script
 
 1.0.0 "done"
 * better command line inputs
