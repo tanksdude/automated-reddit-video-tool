@@ -52,15 +52,17 @@ Steps:
 0. install the programs listed above (or change the script as you need)
 1. Obtain the comment you wish to be read aloud. Paste it into a text file.
 2. (Non-developer step) Open the command line and `cd` to where you placed this project. For example, `cd C:/Users/<name>/Desktop/automated-reddit-video-tool`.
-3. Split the comment by sentences: `python comment_splitter.py [comment input file] [line-by-line output name]` (non-developers: run this through the command line)
+3. Split the comment by sentences: `python comment_splitter.py <comment input file> <line-by-line output name>` (non-developers: run this through the command line)
 4. (Optional) Manually edit the output file to adjust anything you want. For example, extra pauses when reading a comma-separated list or splitting after emojis.
-5. (Optional) Generate a test image of the full comment, so you can change the font size and image size and stuff: `python comment_test_image.py [line-by-line input file] [png file output name]`
-6. Take that output and have it read aloud: `python comment_to_speech.py [line-by-line input file] [mp4 file names]` (have a "$" in the MP4 name, because that's where the numbers will go)
+5. (Optional) Generate a test image of the full comment, so you can change the font size and image size and stuff: `python comment_test_image.py <line-by-line input file> <png file output name>`
+6. Take that output and have it read aloud: `python comment_to_speech.py <line-by-line input file> <mp4 file names>` (have a "$" in the MP4 name, because that's where the numbers will go)
 7. Note: To edit the parameters of the final output, you will need to edit the constants at the top of `comment_to_speech.py`. The font is Verdana because that's what Reddit uses.
 8. Throw the MP4 files into your favorite video editor and do what you want!
 9. (Optional) There's an AutoHotkey script included with this project (`kdenlive_size_adjustment.ahk`) to speed up editing in Kdenlive, since Kdenlive scales the video and I didn't want that.
 
 There are ways to further automate this process but that's beyond the scope of this project.
+
+If you get the error `'python' is not recognized as an internal or external command, operable program or batch file.`, this means you haven't added Python to PATH. The easiest fix would be to reinstall Python and check "Add Python to PATH" at the start of the installation. Another solution is to [manually do that yourself](https://www.geeksforgeeks.org/how-to-add-python-to-windows-path/). The least-intrustive option is to change all `python` commands into `py -3`.
 
 ### Bonus
 
@@ -82,17 +84,21 @@ Then `python comment_splitter.py [input comment file] [split comment file] -c [c
 
 Emojis don't render with full color. Likely an issue about rendering them as raw Unicode characters or something, I dunno. Happens because ImageMagick is fed Markdown text, proper solution is to use a browser or something (but that's complicated).
 
+### `Odd character â?obâ??, expected a â?o=â?? after attribute name â?omeâ?? of element â?o---â??`
+
+Turns out ImageMagick's Pango renderer (the one used in this project to render Markdown) is actually an HTML renderer. (How did I not notice for so long? I knew \**doing this*\* never make the text italic! I assumed it was an ImageMagick problem that wasn't considered due to limited documentation on Pango.) As such, if you have a `<` or `>` character, ImageMagick will think it's the start of a HTML tag. To fix, replace those characters with `&lt;` and `&gt;` (and replace other `&` with `&amp;`). This is not done automatically because the speech file uses plain text, and HTML is not plain text.
+
+### Video codec note
+
+The video codec is set to H.264, because that's been the standard for a long time. As of writing this, the industry is *slowly* moving towards AV1. You will need to update the script a little if you want to use the AV1 codec (just change one string at the top of `comment_to_speech.py`).
+
 ### Known Usability Problem
 
 Kdenlive automatically scales clips to the project's profile settings. Although it keeps the aspect ratio, it's still not preferable.
 
 I got around this issue by making an AutoHotkey script to drag a Transform effect and update all the values necessary (`kdenlive_size_adjustment.ahk`). Yes, I updated the script for each comment.
 
-Alternatively, you could scale the image so you don't even need a background, but that makes a less interesting viewing experience.
-
-### Video codec note
-
-The video codec is set to H.264, because that's been the standard for a long time. As of writing this, the industry is slowly moving towards AV1. You will need to update the script a little if you want to use the AV1 codec (just change one string at the top of `comment_to_speech.py`).
+Alternatively, you could scale the image so you don't even need a background, but that makes a less interesting viewing experience. (Although the image could be transparent, the video can't be (for H.264 video; some encoders support alpha channels, and you can [check FFmpeg individual encoder support](https://stackoverflow.com/questions/61355521/how-can-i-create-a-transparent-video-from-transparent-images/61358177#61358177); seems like [FFV1 and qtrle](https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels/1505695#1505695) are the main ones).)
 
 ## Example usage
 
