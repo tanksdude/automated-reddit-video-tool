@@ -80,6 +80,8 @@ Then `python comment_splitter.py [input comment file] [split comment file] -c [c
 
 `python comment_to_speech.py [rest of args] -n [video number]`
 
+(This doesn't update later videos that depend on this one; should only use this option if you're only using the audio from the videos and need to replace just one.)
+
 ### Known Emoji Problem
 
 Emojis don't render with full color. Likely an issue about rendering them as raw Unicode characters or something, I dunno. Happens because ImageMagick is fed Markdown text, proper solution is to use a browser or something (but that's complicated).
@@ -96,7 +98,7 @@ The video codec is set to H.264, because that's been the standard for a long tim
 
 Kdenlive automatically scales clips to the project's profile settings. Although it keeps the aspect ratio, it's still not preferable.
 
-I got around this issue by making an AutoHotkey script to drag a Transform effect and update all the values necessary (`kdenlive_size_adjustment.ahk`). Yes, I updated the script for each comment.
+I got around this issue by making an AutoHotkey script to drag a Transform effect and update all the values necessary (`kdenlive_size_adjustment.ahk`). I later found out you only need to correct one Transform effect, then drag it onto the other necessary clips, instead of dragging a Transform effect onto all of them and separately updating them all.
 
 Alternatively, you could scale the image so you don't even need a background, but that makes a less interesting viewing experience. (Although the image could be transparent, the video can't be (for H.264 video; some encoders support alpha channels, and you can [check FFmpeg individual encoder support](https://stackoverflow.com/questions/61355521/how-can-i-create-a-transparent-video-from-transparent-images/61358177#61358177); seems like [FFV1 and qtrle](https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels/1505695#1505695) are the main ones).)
 

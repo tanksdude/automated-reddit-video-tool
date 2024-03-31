@@ -2,6 +2,10 @@
 * option to merge the separate mp4 files into one
 * option to not use the command line?
 
+1.0.2
+* cleaned up the scripts
+    * AHK script: realized effects in Kdenlive can be copied by simply dragging it onto another clip, making half this script useless...
+
 1.0.1
 * changed default video settings, updated AHK script
 * option to replace/generate a single video

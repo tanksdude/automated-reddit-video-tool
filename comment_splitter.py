@@ -16,9 +16,6 @@ parser.add_argument("output_comment_file", help="output split comment file")
 
 args = parser.parse_args()
 
-#if len(sys.argv) < 3:
-#	sys.exit(f"Usage: {sys.argv[0]} [input_comment.txt] [output_comment.txt] [optional_censored_word_dict.txt]")
-
 input_file_path = args.input_comment_file
 output_file_path = args.output_comment_file
 censored_words_dict_path = args.censored_words_dict

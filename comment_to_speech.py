@@ -3,7 +3,7 @@ import subprocess
 import argparse
 import time
 
-# python comment_to_speech.py input_splits/lorem_ipsum_speech.txt output_speech/lorem_ipsum_$.mp4 -t input_splits/lorem_ipsum_image.txt
+# python comment_to_speech.py input_splits/lorem_ipsum_speech.txt output_speech/lorem_ipsum_$.mp4 -t input_splits/lorem_ipsum_text.txt
 
 # Image parameters:
 IMAGE_WIDTH = 960 - 2*32
@@ -48,9 +48,6 @@ parser.add_argument("output_mp4_files", help="output video files (needs a '$' in
 parser.add_argument("-n", "--video_number", metavar="video_number", required=False, help="update/generate a specific video", type=int) #maybe try action="extend"
 
 args = parser.parse_args()
-
-#if len(sys.argv) < 3:
-#	sys.exit(f"Usage: {sys.argv[0]} [input_comment.txt] [output_vid_$.mp4] [optional_image_text.txt]")
 
 input_speech_text_file_path = args.input_speech_file
 output_vid_file_path = args.output_mp4_files

@@ -29,9 +29,6 @@ parser.add_argument("output_image_file", help="output image file")
 
 args = parser.parse_args()
 
-#if len(sys.argv) < 3:
-#	sys.exit(f"Usage: {sys.argv[0]} [line-by-line_input.txt] [output_image.png]")
-
 input_image_text_file_path = args.input_split_comment_file
 output_img_file_path = args.output_image_file
 
