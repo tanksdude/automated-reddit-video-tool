@@ -88,11 +88,15 @@ Emojis don't render with full color. Likely an issue about rendering them as raw
 
 ### `Odd character â?obâ??, expected a â?o=â?? after attribute name â?omeâ?? of element â?o---â??`
 
-Turns out ImageMagick's Pango renderer (the one used in this project to render Markdown) is actually an HTML renderer. (How did I not notice for so long? I knew \**doing this*\* never make the text italic! I assumed it was an ImageMagick problem that wasn't considered due to limited documentation on Pango.) As such, if you have a `<` or `>` character, ImageMagick will think it's the start of a HTML tag. To fix, replace those characters with `&lt;` and `&gt;` (and replace other `&` with `&amp;`). This is not done automatically because the speech file uses plain text, and HTML is not plain text.
+ImageMagick's Pango renderer (used to render text in this project) has non-typical markup syntax, looking like HTML ([apparently it's "standard", but Markdown ended up being far more popular so it feels wrong](https://en.wikipedia.org/wiki/Standard_Generalized_Markup_Language)). Instead of \**doing this*\* for italic, you do <i>*this*</i>. [Here's the full syntax list (through the Wayback Machine)](https://web.archive.org/web/20210514023116/https://developer.gnome.org/pygtk/stable/pango-markup-language.html). As such, if you have a `<` or `>` character, Pango will think it's the start of some markup. To fix, replace those characters with `&lt;` and `&gt;` (and replace other `&` with `&amp;`). This is not done automatically because the speech file uses plain text, and markup is not plain text.
 
 ### Video codec note
 
 The video codec is set to H.264, because that's been the standard for a long time. As of writing this, the industry is *slowly* moving towards AV1. You will need to update the script a little if you want to use the AV1 codec (just change one string at the top of `comment_to_speech.py`).
+
+### Audio codec note
+
+The audio codec is set to AAC, because that's been the standard for a long time. At least to me, there has been very little industry movement pushing for Opus, probably because video takes up **far** more space than audio, despite Opus being around for far longer than AV1 (though they seriously have an awareness problem, since I only found out about Opus when one day randomly searching for what other audio codecs exist). Most sites that support AV1 support Opus. You will need to update the script a little if you want to use the Opus codec (just change one string at the top of `comment_to_speech.py`).
 
 ### Known Usability Problem
 

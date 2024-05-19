@@ -20,10 +20,10 @@ IMAGE_SIZE_EXTENDED = str(IMAGE_WIDTH + 2*IMAGE_W_BORDER) + "x" + str(IMAGE_HEIG
 
 # Video parameters:
 VIDEO_FPS = "60"
-VIDEO_VID_BITRATE = "10M" # recommended 8M for the final export
+VIDEO_VID_BITRATE = "10M" # recommended 8M for your final export (though often 2M is plenty)
 VIDEO_AUD_BITRATE = "256k"
-VIDEO_VID_CODEC = "libx264" # libaom-av1 for AV1
-VIDEO_AUD_CODEC = "aac" # doesn't everything nowadays use AAC?
+VIDEO_VID_CODEC = "libx264" # "libaom-av1" for AV1
+VIDEO_AUD_CODEC = "aac" # "libopus" for Opus ("opus" is experimental, don't use it)
 # video size controlled by the image size
 
 def text_to_speech_func(wav_file_name, text_file_name):
