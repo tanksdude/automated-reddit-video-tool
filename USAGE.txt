@@ -42,6 +42,11 @@ Replace a single video:
 
 
 
+Only audio, no video:
+`python comment_to_speech.py <rest of args> -a`
+
+
+
 comment_splitter.py
 usage: comment_splitter.py [-h] [-c censored_words_dict] input_comment_file output_comment_file
 
@@ -68,7 +73,7 @@ optional arguments:
 
 
 comment_to_speech.py
-usage: comment_to_speech.py [-h] [-t input_text_file] [-n video_number] input_speech_file output_mp4_files
+usage: comment_to_speech.py [-h] [-t input_text_file] [-n video_number] input_speech_file output_mp4_files [-a]
 
 positional arguments:
   input_speech_file    text to read aloud
@@ -78,6 +83,7 @@ optional arguments:
   -h, --help           show this help message and exit
   -t input_text_file   text to show on screen
   -n video_number      update/generate a specific video
+  -a, --audio_only     only output audio files, no video
 
 
 

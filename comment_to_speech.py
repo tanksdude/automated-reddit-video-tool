@@ -46,6 +46,7 @@ parser.add_argument("input_speech_file", help="text to read aloud")
 parser.add_argument("-t", "--input_text_file", metavar="input_text_file", required=False, help="text to show on screen")
 parser.add_argument("output_mp4_files", help="output video files (needs a '$' in its name)")
 parser.add_argument("-n", "--video_number", metavar="video_number", required=False, help="update/generate a specific video", type=int) #maybe try action="extend"
+parser.add_argument("-a", "--audio_only", required=False, help="only output audio files, no video", action="store_true")
 
 args = parser.parse_args()
 
@@ -55,8 +56,7 @@ if output_vid_file_path.find('$') == -1:
 	sys.exit("Bad output vid file names")
 input_image_text_file_path = args.input_text_file
 replace_video_number = args.video_number
-
-start_time = time.time()
+audio_only = args.audio_only
 
 def gen_output_vid_file_path(num):
 	return output_vid_file_path.replace("$", str(num))
@@ -66,6 +66,8 @@ def gen_output_wav_file_path(num):
 
 def gen_output_img_file_path(num):
 	return gen_output_vid_file_path(num) + ".png"
+
+start_time = time.time()
 
 try:
 	input_speech_text_file = open(input_speech_text_file_path, "r", encoding="utf8")
@@ -126,20 +128,21 @@ for i in range(len(speech_text_file_lines)):
 		result = text_to_speech_func(gen_output_wav_file_path(files_count), gen_output_wav_file_path(files_count)+".temp")
 		os.remove(gen_output_wav_file_path(files_count)+".temp")
 
-		# image file:
-		output_file = open(gen_output_img_file_path(files_count)+".temp", "w", encoding="utf8")
-		output_file.write(curr_text_file_read)
-		output_file.close()
+		if not audio_only:
+			# image file:
+			output_file = open(gen_output_img_file_path(files_count)+".temp", "w", encoding="utf8")
+			output_file.write(curr_text_file_read)
+			output_file.close()
 
-		result = text_to_image_func(gen_output_img_file_path(files_count), gen_output_img_file_path(files_count)+".temp", IMAGE_SIZE, IMAGE_FONT_SIZE, IMAGE_BACKGROUND_COLOR, IMAGE_TEXT_COLOR, IMAGE_SIZE_EXTENDED)
-		os.remove(gen_output_img_file_path(files_count)+".temp")
+			result = text_to_image_func(gen_output_img_file_path(files_count), gen_output_img_file_path(files_count)+".temp", IMAGE_SIZE, IMAGE_FONT_SIZE, IMAGE_BACKGROUND_COLOR, IMAGE_TEXT_COLOR, IMAGE_SIZE_EXTENDED)
+			os.remove(gen_output_img_file_path(files_count)+".temp")
 
-		# video:
-		result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_AUD_BITRATE)
+			# video:
+			result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_AUD_BITRATE)
 
-		# cleanup:
-		os.remove(gen_output_wav_file_path(files_count))
-		os.remove(gen_output_img_file_path(files_count))
+			# cleanup:
+			os.remove(gen_output_wav_file_path(files_count))
+			os.remove(gen_output_img_file_path(files_count))
 
 		# break early if only one video is being updated:
 		if (replace_video_number != None):

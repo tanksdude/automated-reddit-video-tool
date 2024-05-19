@@ -82,6 +82,10 @@ Then `python comment_splitter.py [input comment file] [split comment file] -c [c
 
 (This doesn't update later videos that depend on this one; should only use this option if you're only using the audio from the videos and need to replace just one.)
 
+#### Want just the audio because you're gonna do your own video clips? No problem!
+
+`python comment_to_speech.py [rest of args] -a`
+
 ### Known Emoji Problem
 
 Emojis don't render with full color. Likely an issue about rendering them as raw Unicode characters or something, I dunno. Happens because ImageMagick is fed Markdown text, proper solution is to use a browser or something (but that's complicated).
