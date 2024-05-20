@@ -3,7 +3,7 @@ import subprocess
 import argparse
 import time
 
-# python comment_test_image.py input_splits/lorem_ipsum_speech.txt input_splits/lorem_ipsum_test_image.png
+# python comment_test_image.py input_splits/lorem_ipsum_text.txt input_splits/lorem_ipsum_test_image.png
 
 # Image parameters:
 IMAGE_WIDTH = 960 - 2*32

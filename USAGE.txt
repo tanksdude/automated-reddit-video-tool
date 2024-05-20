@@ -32,8 +32,8 @@ Then `python comment_splitter.py <input comment file> <split comment file> -c <c
 
 
 
-Speech different from image text:
-`python comment_to_speech.py <line-by-line speech text input file> <mp4 file names> -t <line-by-line image text input file>`
+Image text different from speech:
+`python comment_to_speech.py <line-by-line image text input file> <mp4 file names> -s <line-by-line speech text input file>`
 
 
 
@@ -73,17 +73,17 @@ optional arguments:
 
 
 comment_to_speech.py
-usage: comment_to_speech.py [-h] [-t input_text_file] [-n video_number] input_speech_file output_mp4_files [-a]
+usage: comment_to_speech.py [-h] [-s input_speech_file] [-n video_number] [-a] input_text_file output_mp4_files
 
 positional arguments:
-  input_speech_file    text to read aloud
-  output_mp4_files     output video files (needs a '$' in its name)
+  input_text_file        text to show on screen
+  output_mp4_files       output video files (needs a '$' in its name)
 
 optional arguments:
-  -h, --help           show this help message and exit
-  -t input_text_file   text to show on screen
-  -n video_number      update/generate a specific video
-  -a, --audio_only     only output audio files, no video
+  -h, --help             show this help message and exit
+  -s input_speech_file   text to read aloud
+  -n video_number        update/generate a specific video
+  -a, --audio_only       only output audio files, no video
 
 
 

@@ -3,7 +3,7 @@ import subprocess
 import argparse
 import time
 
-# python comment_to_speech.py input_splits/lorem_ipsum_speech.txt output_speech/lorem_ipsum_$.mp4 -t input_splits/lorem_ipsum_text.txt
+# python comment_to_speech.py input_splits/lorem_ipsum_text.txt output_speech/lorem_ipsum_$.mp4 -s input_splits/lorem_ipsum_speech.txt
 
 # Image parameters:
 IMAGE_WIDTH = 960 - 2*32
@@ -42,19 +42,19 @@ def speech_and_image_to_vid_func(vid_file_name, wav_file_name, img_file_name, fr
 	# https://ffmpeg.org/ffmpeg.html#Main-options
 
 parser = argparse.ArgumentParser()
-parser.add_argument("input_speech_file", help="text to read aloud")
-parser.add_argument("-t", "--input_text_file", metavar="input_text_file", required=False, help="text to show on screen")
+parser.add_argument("input_text_file", help="text to show on screen")
+parser.add_argument("-s", "--input_speech_file", metavar="input_speech_file", required=False, help="text to read aloud")
 parser.add_argument("output_mp4_files", help="output video files (needs a '$' in its name)")
 parser.add_argument("-n", "--video_number", metavar="video_number", required=False, help="update/generate a specific video", type=int) #maybe try action="extend"
 parser.add_argument("-a", "--audio_only", required=False, help="only output audio files, no video", action="store_true")
 
 args = parser.parse_args()
 
-input_speech_text_file_path = args.input_speech_file
+input_image_text_file_path = args.input_text_file
 output_vid_file_path = args.output_mp4_files
 if output_vid_file_path.find('$') == -1:
 	sys.exit("Bad output vid file names")
-input_image_text_file_path = args.input_text_file
+input_speech_text_file_path = args.input_speech_file
 replace_video_number = args.video_number
 audio_only = args.audio_only
 
@@ -70,44 +70,44 @@ def gen_output_img_file_path(num):
 start_time = time.time()
 
 try:
-	input_speech_text_file = open(input_speech_text_file_path, "r", encoding="utf8")
+	input_image_text_file = open(input_image_text_file_path, "r", encoding="utf8")
 except FileNotFoundError:
-	sys.exit("File \"" + input_speech_text_file_path + "\" not found!")
+	sys.exit("File \"" + input_image_text_file_path + "\" not found!")
 except IsADirectoryError:
-	sys.exit("\"" + input_speech_text_file_path + "\" is a directory; could not read")
+	sys.exit("\"" + input_image_text_file_path + "\" is a directory; could not read")
 except PermissionError:
-	sys.exit("Could not read \"" + input_speech_text_file_path + "\" due to permissions granted!")
+	sys.exit("Could not read \"" + input_image_text_file_path + "\" due to permissions granted!")
 except Exception as e:
-	sys.exit("Other error while reading file \"" + input_speech_text_file_path + "\": ", e)
+	sys.exit("Other error while reading file \"" + input_image_text_file_path + "\": ", e)
 
-speech_text_file_lines = input_speech_text_file.readlines()
-input_speech_text_file.close()
+image_text_file_lines = input_image_text_file.readlines()
+input_image_text_file.close()
 
-image_text_file_lines = None
-if input_image_text_file_path != None:
+speech_text_file_lines = None
+if input_speech_text_file_path != None:
 	try:
-		input_image_text_file = open(input_image_text_file_path, "r", encoding="utf8")
+		input_speech_text_file = open(input_speech_text_file_path, "r", encoding="utf8")
 	except FileNotFoundError:
-		sys.exit("File \"" + input_image_text_file_path + "\" not found!")
+		sys.exit("File \"" + input_speech_text_file_path + "\" not found!")
 	except IsADirectoryError:
-		sys.exit("\"" + input_image_text_file_path + "\" is a directory; could not read")
+		sys.exit("\"" + input_speech_text_file_path + "\" is a directory; could not read")
 	except PermissionError:
-		sys.exit("Could not read \"" + input_image_text_file_path + "\" due to permissions granted!")
+		sys.exit("Could not read \"" + input_speech_text_file_path + "\" due to permissions granted!")
 	except Exception as e:
-		sys.exit("Other error while reading file \"" + input_image_text_file_path + "\":", e)
+		sys.exit("Other error while reading file \"" + input_speech_text_file_path + "\":", e)
 
-	image_text_file_lines = input_image_text_file.readlines()
-	input_image_text_file.close()
+	speech_text_file_lines = input_speech_text_file.readlines()
+	input_speech_text_file.close()
 else:
-	image_text_file_lines = speech_text_file_lines
+	speech_text_file_lines = image_text_file_lines
 
-if len(speech_text_file_lines) != len(image_text_file_lines):
-	sys.exit("Lines in speech text file and image text file don't match")
+if len(image_text_file_lines) != len(speech_text_file_lines):
+	sys.exit("Lines in image text file and speech text file don't match")
 
 files_count = 0 # for the vid_$.mp4 file; the file number won't match the line number
 curr_text_file_read = ""
 
-for i in range(len(speech_text_file_lines)):
+for i in range(len(image_text_file_lines)):
 	speech_line = speech_text_file_lines[i]
 	image_line = image_text_file_lines[i]
 	speech_line = speech_line[0:-1] # every line should end in a \n

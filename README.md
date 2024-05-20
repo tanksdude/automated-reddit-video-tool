@@ -70,21 +70,21 @@ If you get the error `'python' is not recognized as an internal or external comm
 
 Make a file in the form `bad1|censored1 bad2|censored2 bad3|censored3 ...` (but replace spaces with newlines), and keep in mind that the word replacement is case-sensitive.
 
-Then `python comment_splitter.py [input comment file] [split comment file] -c [censored words file]`
+Then `python comment_splitter.py <input comment file> <split comment file> -c <censored words file>`
 
 #### Want the words spoken to be slightly different than the text that appears (since sometimes the text-to-speech voices introduce pauses where most people wouldn't pause)? No problem!
 
-`python comment_to_speech.py [line-by-line speech text input file] [mp4 file names] -t [line-by-line image text input file]`
+`python comment_to_speech.py <line-by-line image text input file> <mp4 file names> -s <line-by-line speech text input file>`
 
 #### Want to replace just one mis-formatted video? No problem!
 
-`python comment_to_speech.py [rest of args] -n [video number]`
+`python comment_to_speech.py <rest of args> -n <video number>`
 
 (This doesn't update later videos that depend on this one; should only use this option if you're only using the audio from the videos and need to replace just one.)
 
 #### Want just the audio because you're gonna do your own video clips? No problem!
 
-`python comment_to_speech.py [rest of args] -a`
+`python comment_to_speech.py <rest of args> -a`
 
 ### Known Emoji Problem
 

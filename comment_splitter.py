@@ -3,7 +3,7 @@ import re
 import argparse
 import time
 
-# python comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_speech.txt -c input_comments/censored_words_dict.txt
+# python comment_splitter.py input_comments/lorem_ipsum.txt input_splits/lorem_ipsum_text.txt -c input_comments/censored_words_dict.txt
 
 SPLIT_CHARS = "".join([".", "!", "\\?"])
 SPLIT_REGEX = "[" + SPLIT_CHARS + r"]+\S*\s+"
