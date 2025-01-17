@@ -20,10 +20,10 @@ IMAGE_SIZE_EXTENDED = str(IMAGE_WIDTH + 2*IMAGE_W_BORDER) + "x" + str(IMAGE_HEIG
 
 # Video parameters:
 VIDEO_FPS = "60"
-VIDEO_VID_BITRATE = "10M" # recommended 8M for your final export (though often 2M is plenty)
+VIDEO_VID_CRF = "18" # using constant rate factor is more efficient than forcing a constant bitrate; range is 0-51 for H.264 ("sane" range is 18-28), where 0 is lossless, ~18 is visually lossless, and 51 is very lossy
 VIDEO_AUD_BITRATE = "256k"
-VIDEO_VID_CODEC = "libx264" # "libaom-av1" for AV1
-VIDEO_AUD_CODEC = "aac" # "libopus" for Opus ("opus" is experimental, don't use it)
+VIDEO_VID_CODEC = "libx264"
+VIDEO_AUD_CODEC = "copy" # "copy" doesn't re-encode, which apparently works for wav; "aac" for AAC, "libopus" for Opus ("opus" is experimental, don't use it)
 # video size controlled by the image size
 
 def text_to_speech_func(wav_file_name, text_file_name):
@@ -36,8 +36,8 @@ def text_to_image_func(img_file_name, text_file_name, img_size, font_size, back_
 	return subprocess.run(["magick", "-size", img_size, "-background", back_color, "-fill", text_color, "-font", "Verdana", "-pointsize", font_size, "pango:@" + text_file_name, "-gravity", "center", "-extent", img_extended_size, img_file_name])
 	# https://imagemagick.org/Usage/text/#caption
 
-def speech_and_image_to_vid_func(vid_file_name, wav_file_name, img_file_name, framerate, vid_bitrate, aud_bitrate):
-	return subprocess.run(["ffmpeg", "-i", wav_file_name, "-i", img_file_name, "-c:v", VIDEO_VID_CODEC, "-c:a", VIDEO_AUD_CODEC, "-r", framerate, "-b:v", vid_bitrate, "-b:a", aud_bitrate, "-loglevel", "error", "-y", vid_file_name])
+def speech_and_image_to_vid_func(vid_file_name, wav_file_name, img_file_name, framerate, vid_crf, aud_bitrate):
+	return subprocess.run(["ffmpeg", "-i", wav_file_name, "-i", img_file_name, "-c:v", VIDEO_VID_CODEC, "-c:a", VIDEO_AUD_CODEC, "-r", framerate, "-crf", vid_crf, "-b:a", aud_bitrate, "-loglevel", "error", "-y", vid_file_name])
 	# loglevels: quiet, fatal, error, warning
 	# https://ffmpeg.org/ffmpeg.html#Main-options
 
@@ -138,7 +138,7 @@ for i in range(len(image_text_file_lines)):
 			os.remove(gen_output_img_file_path(files_count)+".temp")
 
 			# video:
-			result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_BITRATE, VIDEO_AUD_BITRATE)
+			result = speech_and_image_to_vid_func(gen_output_vid_file_path(files_count), gen_output_wav_file_path(files_count), gen_output_img_file_path(files_count), VIDEO_FPS, VIDEO_VID_CRF, VIDEO_AUD_BITRATE)
 
 			# cleanup:
 			os.remove(gen_output_wav_file_path(files_count))

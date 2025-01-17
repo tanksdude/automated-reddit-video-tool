@@ -4,6 +4,8 @@
 
 1.2.0
 * removed the AHK script since it's no longer needed
+* use CRF instead of bitrate for video files
+* use the raw wav audio instead encoding it
 
 1.1.0
 * switch option for separate image and speech files (image is default, different speech optional; previously reversed)
