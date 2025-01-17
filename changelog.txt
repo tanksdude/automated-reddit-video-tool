@@ -1,6 +1,9 @@
-1.2.0 (not here, probably won't do)
+1.3.0 (not here, probably won't do)
 * option to merge the separate mp4 files into one
 * option for better splitting on periods, like "..." or file extensions not being split on
+
+1.2.0
+* removed the AHK script since it's no longer needed
 
 1.1.0
 * switch option for separate image and speech files (image is default, different speech optional; previously reversed)

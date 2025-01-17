@@ -17,7 +17,6 @@ Usage steps:
 6. Take that output and have it read aloud: `python comment_to_speech.py <line-by-line input file> <mp4 file names>` (have a "$" in the MP4 name, because that's where the numbers will go)
 7. Note: To edit the parameters of the final output, you will need to edit the constants at the top of `comment_to_speech.py`.
 8. Throw the MP4 files into your favorite video editor and do what you want!
-9. (Optional) There's an AutoHotkey script included with this project (`kdenlive_size_adjustment.ahk`) to speed up editing in Kdenlive, since Kdenlive scales the video.
 
 
 
@@ -84,14 +83,3 @@ optional arguments:
   -s input_speech_file   text to read aloud
   -n video_number        update/generate a specific video
   -a, --audio_only       only output audio files, no video
-
-
-
-kdenlive_size_adjustment.ahk
-usage: just run it
-
-helpful Suspend hotkey: CTRL Enter
-helpful ExitApp hotkey: CTRL SHIFT ALT e
-
-minus key: drag a Transform effect onto the clip
-plus key: update the Transform effect's parameters

@@ -42,7 +42,6 @@ If you're not a developer:
 * download the "full" release in the [Releases page on GitHub](https://github.com/tanksdude/automated-reddit-video-tool/releases)
 * install [ImageMagick](https://imagemagick.org/script/download.php)
 * get a video editor, such as [Kdenlive](https://kdenlive.org/en/download/), and learn how to do basic things in it
-    * (Optional) install [AutoHotkey (v1.1)](https://www.autohotkey.com/) to use the provided AHK script with Kdenlive
 * be prepared to use the command line a little
 
 ## Running
@@ -58,7 +57,6 @@ Steps:
 6. Take that output and have it read aloud: `python comment_to_speech.py <line-by-line input file> <mp4 file names>` (have a "$" in the MP4 name, because that's where the numbers will go)
 7. Note: To edit the parameters of the final output, you will need to edit the constants at the top of `comment_to_speech.py`. The font is Verdana because that's what Reddit uses.
 8. Throw the MP4 files into your favorite video editor and do what you want!
-9. (Optional) There's an AutoHotkey script included with this project (`kdenlive_size_adjustment.ahk`) to speed up editing in Kdenlive, since Kdenlive scales the video and I didn't want that.
 
 There are ways to further automate this process but that's beyond the scope of this project.
 
@@ -102,14 +100,6 @@ The video codec is set to H.264, because that's been the standard for a long tim
 
 The audio codec is set to AAC, because that's been the standard for a long time. At least to me, there has been very little industry movement pushing for Opus, probably because video takes up **far** more space than audio, despite Opus being around for far longer than AV1 (though they seriously have an awareness problem, since I only found out about Opus when one day randomly searching for what other audio codecs exist). Most sites that support AV1 support Opus. You will need to update the script a little if you want to use the Opus codec (just change one string at the top of `comment_to_speech.py`).
 
-### Known Usability Problem
-
-Kdenlive automatically scales clips to the project's profile settings. Although it keeps the aspect ratio, it's still not preferable.
-
-I got around this issue by making an AutoHotkey script to drag a Transform effect and update all the values necessary (`kdenlive_size_adjustment.ahk`). I later found out you only need to correct one Transform effect, then drag it onto the other necessary clips, instead of dragging a Transform effect onto all of them and separately updating them all.
-
-Alternatively, you could scale the image so you don't even need a background, but that makes a less interesting viewing experience. (Although the image could be transparent, the video can't be (for H.264 video; some encoders support alpha channels, and you can [check FFmpeg individual encoder support](https://stackoverflow.com/questions/61355521/how-can-i-create-a-transparent-video-from-transparent-images/61358177#61358177); seems like [FFV1 and qtrle](https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels/1505695#1505695) are the main ones).)
-
 ## Example usage
 
 Input comment:
@@ -148,13 +138,9 @@ This is intended to be an extremely simple way to automate the worst parts of Re
 
 If you want to do something with this project, the source code is right here.
 
-## Versioning
-
-1.0.0 is "done," and I dunno if I'll update it after that.
-
 ## License
 
-This project is licensed under the GNU General Public License v3.0
+GNU General Public License v3.0
 
 ## Acknowledgments
 
