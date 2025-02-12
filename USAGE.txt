@@ -1,6 +1,9 @@
+Notice:
+There is a GUI version of this program available! Check it out here: https://github.com/tanksdude/automated-reddit-video-tool-gui
+
 Prerequisites:
 * Python 3
-* Windows (because I couldn't get Daniel UK working on non-Windows)
+* Windows
 * follow the steps in README.md to install the required programs (Balabolka, ImageMagick, FFmpeg)
 * a text editor to change some parameters at the top of the Python scripts
 * a video editor to put everything together

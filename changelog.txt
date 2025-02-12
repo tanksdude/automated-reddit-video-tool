@@ -1,8 +1,4 @@
-1.3.0 (not here, probably won't do)
-* option to merge the separate mp4 files into one
-* option for better splitting on periods, like "..." or file extensions not being split on
-
-1.2.0
+1.2.0 "final"
 * removed the AHK script since it's no longer needed
 * use CRF instead of bitrate for video files
 * use the raw wav audio instead encoding it
@@ -34,3 +30,4 @@
 * AHK script for Kdenlive
 
 GitHub: https://github.com/tanksdude/automated-reddit-video-tool
+new version: https://github.com/tanksdude/automated-reddit-video-tool-gui

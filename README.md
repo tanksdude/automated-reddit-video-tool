@@ -1,3 +1,7 @@
+# Notice
+
+There is a GUI version of this program available now! [Click here](https://github.com/tanksdude/automated-reddit-video-tool-gui)
+
 # (Semi-)Automated Reddit Video Tool
 
 A Python program that takes text input and can generate the sentence-by-sentence reading and text-to-speech stuff that's common in Reddit reading videos.
@@ -17,7 +21,7 @@ There are quite a few programs needed to properly do something like this. At the
 
 For this project, I just used whatever free and good stuff existed. Since the source code is here, you should be able to swap out a requirement pretty easily, if you know what you're doing. I used:
 
-* [Balabolka](http://balabolka.site/balabolka.htm) (command line version) for text-to-speech (I couldn't figure out how to make [eSpeak](https://espeak.sourceforge.net/) use Daniel UK through the command line)
+* [Balabolka](http://balabolka.site/balabolka.htm) (command line version) for text-to-speech
 * [ImageMagick](https://imagemagick.org/) for image creation (*way* easier than learning [GIMP](https://www.gimp.org/) scripting)
 * [FFmpeg](https://ffmpeg.org/) for merging an image and an audio file into a video file (good luck finding good alternatives to this)
 * [Kdenlive](https://kdenlive.org/en/) for video editing (why are there so few good free video editors)
@@ -25,24 +29,16 @@ For this project, I just used whatever free and good stuff existed. Since the so
 ### Prerequisites
 
 * Python 3
-* Windows, since I couldn't figure out how to add Daniel UK to eSpeak
-    * of course, since the source code is here, it's not hard to change some things to make it work on Linux (and if you got Daniel UK working, tell me how)
+* Windows, since Daniel UK uses [Microsoft's SAPI](https://en.wikipedia.org/wiki/Microsoft_Speech_API)
 
 ### Installation
 
-* download this repository
+* download this repository or the latest release in the [Releases page on GitHub](https://github.com/tanksdude/automated-reddit-video-tool/releases)
 * download [Balabolka command line utility](http://balabolka.site/bconsole.htm), **then place the executable in the root folder**
 * install [ImageMagick](https://imagemagick.org/script/download.php) (the full thing, so it will get added to PATH and usable by a command line)
 * download [FFmpeg](https://www.gyan.dev/ffmpeg/builds/), **then place the executable in the root folder**
 * Linux: probably `sudo apt install espeak`, `imagemagick`, and `ffmpeg`, and change some Python code
 * get a video editor
-
-If you're not a developer:
-
-* download the "full" release in the [Releases page on GitHub](https://github.com/tanksdude/automated-reddit-video-tool/releases)
-* install [ImageMagick](https://imagemagick.org/script/download.php)
-* get a video editor, such as [Kdenlive](https://kdenlive.org/en/download/), and learn how to do basic things in it
-* be prepared to use the command line a little
 
 ## Running
 
@@ -94,11 +90,11 @@ ImageMagick's Pango renderer (used to render text in this project) has non-typic
 
 ### Video codec note
 
-The video codec is set to H.264, because that's been the standard for a long time. As of writing this, the industry is *slowly* moving towards AV1. You will need to update the script a little if you want to use the AV1 codec (just change one string at the top of `comment_to_speech.py`). *However*, AV1 is very computationally expensive (~60× H.264), so you probably shouldn't have this little script output AV1 video.
+The video codec is set to H.264, because that's been the standard for a long time. As of writing this, the industry is *slowly* moving towards AV1. You will need to update the script a little if you want to use the AV1 codec (just change one string at the top of `comment_to_speech.py`). ***However***, AV1 is very computationally expensive (~60× H.264), so you probably shouldn't have this little script output AV1 video.
 
 ### Audio codec note
 
-The audio codec is set to "copy", meaning no re-encoding the WAV, specifically some kind of [raw audio](https://trac.ffmpeg.org/wiki/audio%20types). When you export your final video in a video editor, you should use an actual codec (this is the default behavior in every video editor I've ever used). AAC is the current long-standing industry standard, with little movement pushing for Opus. Most sites that support AV1 support Opus.
+The audio codec is set to "copy", meaning no re-encoding the WAV, specifically some kind of [raw audio](https://trac.ffmpeg.org/wiki/audio%20types). If your video editor does not support raw audio for some reason, you should change the codec to something standard like AAC (just change one string at the top of `comment_to_speech.py`). AAC is the current long-standing industry standard, with little movement pushing for Opus. Most sites that support AV1 support Opus.
 
 ## Example usage
 
@@ -132,12 +128,6 @@ It's a good idea to cite your sources. To do this, add `Poster: u/AutoModerator`
 
 ![automoderator example](examples/automoderator.gif)
 
-## Contributing
-
-This is intended to be an extremely simple way to automate the worst parts of Reddit readings (line-by-line advancement), so once it's done it's done.
-
-If you want to do something with this project, the source code is right here.
-
 ## License
 
 GNU General Public License v3.0
@@ -146,4 +136,3 @@ GNU General Public License v3.0
 
 * Reddit readings
 * myself for making me use Python to do something more "code-y" for once
-* StackOverflow
